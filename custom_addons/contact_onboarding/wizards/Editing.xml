@@ -1,0 +1,28 @@
+<odoo>
+    <data>
+        <record id="view_supplier_classification_wizard" model="ir.ui.view">
+            <field name="name">view.supplier.classification.wizard</field>
+            <field name="model">edit.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+
+                        <field name="industry_ids" widget="many2many_checkboxes"/>
+                        <field name="material_ids" widget="many2many_checkboxes"/>
+                        <field name="certification_ids" widget="many2many_checkboxes"/>
+                        <field name="quality_control_ids" widget="many2many_checkboxes"/>
+                        <field name="language_ids" widget="many2many_checkboxes"/>
+                        <field name="production_method_ids" widget="many2many_checkboxes"/>
+                        <field name="production_method_feature_ids" widget="many2many_checkboxes"/>
+                        <field name="approved_method_ids" widget="many2many_checkboxes"/>
+                        <field name="extra_info"/> 
+                    </group>
+                    <footer>
+                        <button string="Save" type="object" name="apply_changes" class="btn-primary"/>
+                        <button string="Discard" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

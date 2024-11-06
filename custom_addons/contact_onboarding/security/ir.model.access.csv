@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_partner_user,res.partner.user,model_res_partner,base.group_user,1,1,1,1
+access_industry_user,industry.user,model_industry,base.group_user,1,1,1,1
+access_material_user,material.user,model_material,base.group_user,1,1,1,1
+access_certification_user,certification.user,model_certification,base.group_user,1,1,1,1
+access_quality_control_user,quality.control.user,model_quality_control,base.group_user,1,1,1,1
+access_language_user,language.user,model_language,base.group_user,1,1,1,1
+access_production_method_user,production.method.user,model_production_method,base.group_user,1,1,1,1
+access_production_method_feature_user,production.method.feature.user,model_production_method_feature,base.group_user,1,1,1,1
+access_approved_method_user,approved.method.user,model_approved_method,base.group_user,1,1,1,1
+access_edit_wizard,access.edit.wizard,model_edit_wizard,,1,1,1,1
