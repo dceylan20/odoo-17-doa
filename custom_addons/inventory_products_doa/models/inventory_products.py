@@ -1,7 +1,7 @@
 import base64
 import os
 import requests
-from odoo import models, fields, api
+from odoo import models, fields, api, tools
 from datetime import datetime
 import logging
 
@@ -54,13 +54,13 @@ class ProductTemplate(models.Model):
             'technical_drawing': (self.original_filename, decoded_file)
         }
 
-        # Gönderilecek verileri loglama
-        _logger.debug(f"CDN'e gönderilen dosya verileri: {files}")
+        # Gönderilecek verileri loglama (binary veri yerine sadece isimleri logluyoruz)
+        _logger.debug(f"CDN'e gönderilen dosya verileri: odooid={self.id}, product_name={self.name}, original_filename={self.original_filename}")
 
         try:
             response = requests.post(url, headers=headers, files=files)
             _logger.info(f"CDN'e dosya yükleme isteği gönderildi: {url}")
-            _logger.debug(f"CDN API isteği verileri: OdooID={self.id}, ProductName={self.name}, OriginalFilename={self.original_filename}")
+            _logger.debug(f"CDN API isteği verileri: odooid={self.id}, product_name={self.name}, original_filename={self.original_filename}")
         except Exception as e:
             _logger.error(f"CDN'e dosya yükleme isteği gönderilirken hata oluştu: {str(e)}")
             raise Exception(f"CDN'e dosya yükleme isteği gönderilirken hata oluştu: {str(e)}")
@@ -98,6 +98,12 @@ class ProductTemplate(models.Model):
                 try:
                     cdn_url = record.post_to_cdn()
                     record.cdn_link = cdn_url
+                    # Chatter'a mesaj gönderme
+                    current_date = datetime.now().strftime('%d/%m/%Y')
+                    message = (
+                        f"{tools.html_escape(self.env.user.name)} {current_date} tarihinde bir dosya yükledi. "
+                        f"Bu linki kopyalayarak dökümanı indirebilirsiniz:   {tools.html_escape(cdn_url)}")
+                    record.message_post(body=message, subtype_xmlid='mail.mt_note', message_type='comment')
                 except Exception as e:
                     _logger.error(f"Dosya yüklenirken hata oluştu: {str(e)}")
                     raise models.ValidationError(f"Dosya yüklenirken hata oluştu: {str(e)}")
@@ -111,6 +117,12 @@ class ProductTemplate(models.Model):
             try:
                 cdn_url = record.post_to_cdn()
                 record.cdn_link = cdn_url
+                # Chatter'a mesaj gönderme
+                current_date = datetime.now().strftime('%d/%m/%Y')
+                message = (
+                    f"{self.env.user.name} {current_date} tarihinde bir dosya yükledi. " 
+                    f"Bu linki kopyalayarak dökümanı indirebilirsiniz:  {cdn_url}")
+                record.message_post(body=message)
             except Exception as e:
                 _logger.error(f"Dosya yüklenirken hata oluştu: {str(e)}")
                 raise models.ValidationError(f"Dosya yüklenirken hata oluştu: {str(e)}")
