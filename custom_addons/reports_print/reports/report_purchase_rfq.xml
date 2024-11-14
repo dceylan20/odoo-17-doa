@@ -3,16 +3,11 @@
     <data>
 
         <!-- Template Definition -->
-        <template id="report_purchase_template">
+        <template id="report_purchase_rfq_template">
             <t t-call="reports_print.external_layout_yena">
-                <style>
-                    * {
-                        font-family: "DejaVu Sans", Arial, sans-serif !important;
-                        }
-                </style>
                 <t t-foreach="docs" t-as="o">
-                <main> 
-                    <h1 style="text-align:center;">SATIN ALMA SİPARİŞİ</h1>
+                <main> <!-- main etiketini ekliyoruz -->
+                    <h1 style="text-align:center;">TEKLİF TALEBİ</h1>
                     <br/>
                     <div class="page">
                         <div class="oe_structure"/>
@@ -39,7 +34,7 @@
                                         </div>
                                     </td>
 
-                                    <!-- Müşteri Bilgileri / ödeme şekli ve teslim şeklini ekledim -->
+                                    <!-- Müşteri Bilgileri -->
                                     <td style="width:45%; padding-right: 10px; vertical-align: top;">
                                         <span t-field="o.partner_id"/>
                                         <br/>
@@ -53,15 +48,18 @@
                                         <br/>
                                         <div style="margin-top: 20px;">
                                             <br/><br/>
+                                            <div t-if="o.date_order">
+                                                <b>Son Teklif Tarihi:</b> 
+                                                <span t-esc="o.date_order.strftime('%d/%m/%Y')"/>
+                                            </div>
                                             <div t-if="o.name"><b>YENA Talep No:</b> <span t-field="o.name"/></div>
                                             <t t-set="today" t-value="datetime.datetime.now()"/>
                                             <div>
                                                 <b>Döküman Tarihi:</b> <span t-esc="today.strftime('%d/%m/%Y')"/>
                                             </div>                                
                                             <div t-if="o.partner_id"><b>Yetkili:</b> <span t-field="o.partner_id"/></div>
-                                            <div t-if="o.incoterm_id"><b>Teslim Şekli:</b> <span t-field="o.incoterm_id" /></div> 
+                                            <div t-if="o.incoterm_id"><b>Teslim Şekli:</b> <span t-field="o.incoterm_id" /></div>
                                             <div t-if="o.date_approve"><b>Teslim Tarihi:</b> <span t-field="o.date_approve" t-options="{'format': 'dd/MM/yyyy'}" /></div>
-                                            <div t-if="o.payment_term_id"><b>Ödeme Şekli:</b> <span t-field="o.payment_term_id" /></div>
                                             <div t-if="o.user_id"><b>Hazırlayan:</b> <span t-field="o.user_id" /></div>
                                         </div>
                                     </td>
@@ -73,36 +71,22 @@
                         <table class="table table-sm o_main_table" style="font-size:10pt">
                             <thead>
                                 <tr style="text-align:center">
+                                    <!-- Product No -->
                                     <t t-set="show_product_no" t-value="any(line.product_id for line in o.order_line)"/>
                                     <t t-if="show_product_no">
-                                        <th name="th_prno" class="text-center"><strong>Çizim No</strong></th>
+                                        <th name="th_productno" class="text-center"><strong>Product No</strong></th>
                                     </t>
-                                    <!-- Coating 
                                     <t t-set="show_coating" t-value="any(line.coating for line in o.order_line)"/>
                                     <t t-if="show_coating">
                                         <th name="th_coating" class="text-center"><strong>Coating</strong></th>
-                                    </t> -->
-                                    <!-- Qty -->
+                                    </t>
                                     <t t-set="show_quantity" t-value="any(line.product_qty for line in o.order_line)"/>
                                     <t t-if="show_quantity">
-                                        <th name="th_quantity" class="text-center"><strong>Quantity</strong></th>
+                                        <th name="th_quantity" class="text-center"><strong>Qty</strong></th>
                                     </t>
-                                    <!-- Total Weight -->
                                     <t t-set="show_total_weight" t-value="any(line.totalweight for line in o.order_line)"/>
                                     <t t-if="show_total_weight">
-                                        <th name="th_totalweight" class="text-center"><strong>Total Weight (kg)</strong></th>
-                                    </t> 
-                                    <!-- birim fiyat ve tutar ekledim. -->
-                                    <!-- Birim Fiyatı -->
-                                    <t t-set="show_unit_price" t-value="any(line.price_unit for line in o.order_line)"/>
-                                    <t t-if="show_unit_price">
-                                        <th name="th_unitprice" class="text-center"><strong>Birim Fiyatı</strong></th>
-                                    </t>
-
-                                    <!-- Tutar -->
-                                    <t t-set="show_amount" t-value="any(line.price_unit * line.product_qty for line in o.order_line)"/>
-                                    <t t-if="show_amount">
-                                        <th name="th_amount" class="text-center"><strong>Tutar</strong></th>
+                                        <th name="th_totalweight" class="text-center"><strong>Total Weight</strong></th>
                                     </t>
                                 </tr>
                             </thead>
@@ -128,17 +112,6 @@
                                         <t t-if="show_total_weight">
                                             <td class="text-center">
                                                 <span t-field="line.totalweight"/>
-                                            </td>
-                                        </t>
-                                        <!-- birim fiyat ve tutarı ekledim -->
-                                        <t t-if="show_unit_price">
-                                            <td class="text-center">
-                                                <span t-esc="line.currency_id.symbol + ' ' + str(line.price_unit)"/>
-                                            </td>
-                                        </t>
-                                        <t t-if="show_amount">
-                                            <td class="text-center">
-                                                <span t-esc="line.currency_id.symbol + ' ' + str(line.price_unit * line.product_qty)"/>
                                             </td>
                                         </t>
                                     </tr>

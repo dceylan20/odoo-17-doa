@@ -15,6 +15,8 @@
         'reports/report_purchase_print.xml',
         'reports/report_template_purchase_print.xml',
         'reports/reports_print.external_layout_yena.xml',
+        'reports/report_purchase_rfq.xml',
+
     ],
 
     'installable': True,
