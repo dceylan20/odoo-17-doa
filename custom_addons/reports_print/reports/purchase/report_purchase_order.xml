@@ -107,6 +107,7 @@
                                                 <td class="text-center" style="vertical-align: middle;">
                                                     <span t-field="line.product_id.customer_description" />
                                                 </td>
+                                                <!--coatingin eklenmesi lazım-->
                                                 <td class="text-center" style="vertical-align: middle;">
                                                     <span t-field="line.product_uom_qty" />
                                                     <span t-field="line.product_uom.name" />
