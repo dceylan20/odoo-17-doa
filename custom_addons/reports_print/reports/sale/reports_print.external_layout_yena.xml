@@ -16,13 +16,7 @@
                 <t t-set="company" t-value="res_company"/>
             </t>
         </t>
-        <!-- Font ve stil tanımları -->
-        <style>
-            * {
-                font-family: "DejaVu Sans", Arial, sans-serif !important;
-            }
-        </style>
-        
+
         <!-- Header boş bırakılıyor -->
         <div class="header"/>
 
