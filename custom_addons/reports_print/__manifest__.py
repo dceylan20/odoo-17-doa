@@ -12,8 +12,15 @@
     'website': 'https://www.yenaengineering.nl',
     'depends': ['base', 'purchase'],
     'data': [
-        'reports/sale/reports_print.external_layout_yena.xml',
-        'reports/sale/reports_print.imzasız_external_layout_yena.xml',
+        'reports/reports_print.external_layout_yena.xml',
+        'reports/reports_print.imzasız_external_layout_yena.xml',
+
+        'reports/sale/report_sale_actions.xml',
+        'reports/sale/report_sale_ce.xml',
+        'reports/sale/report_sale_confirmation_of_order.xml',
+        'reports/sale/report_sale_dop.xml',
+        'reports/sale/report_sale_proposal_form_weight_price.xml',
+        'reports/sale/report_sale_proposal_form.xml',
     
         'reports/purchase/report_purchase_actions.xml',
         'reports/purchase/report_purchase_order.xml',

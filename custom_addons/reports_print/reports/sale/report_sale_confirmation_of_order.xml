@@ -44,6 +44,15 @@
                                                   <br />
                                             Vergi No: <span t-field="o.company_id.vat" />
                                                   <br />
+
+                                            <!-- Banka Bilgileri -->
+                                            <div style="margin-top: 10px;">
+                                                <strong>Bank Info</strong><br />
+                                                BANK NAME: BUNQ <br />
+                                                IBAN: NL26BUNQ2206607298 <br />
+                                                BANK Swift Code: BUNQNL2AXXX <br />
+                                            </div>
+
                                         </div>
 
                                     </td>
@@ -152,6 +161,7 @@
                                         <td style="text-align:center; padding: 8px; border: none;">
                                             <span t-field="line.product_id.name" />
                                         </td>
+                                        <!-- coating eklenmeli-->
                                         <!-- Total Weight -->
                                         <td style="text-align:center; padding: 8px; border: none;">
                                             <span
@@ -174,6 +184,14 @@
                                         </td>
                                     </tr>
                                 </t>
+                                <tr>
+                                    <td colspan="6" style="text-align:right; font-weight:bold; padding: 8px; border-top: 1px solid #000;">
+                                        Total (Exc. VAT):
+                                    </td>
+                                    <td class="text-center" style="font-weight:bold; padding: 8px; border-top: 1px solid #000;">
+                                        <span t-esc="o.amount_untaxed" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}" />
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
 
