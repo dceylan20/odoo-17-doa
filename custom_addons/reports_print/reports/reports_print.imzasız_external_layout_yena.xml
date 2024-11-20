@@ -4,6 +4,12 @@
         <!-- External Layout Standard Yena -->
         <template id="imzasiz_external_layout_standard_yena"
             t-name="reports_print.external_layout_standard_yena">
+            <style>
+                * {
+                    font-family: "DejaVu Sans", Arial, sans-serif !important;
+                 }
+            </style>
+
             <div
                 t-attf-class="article o_report_layout_standard o_company_#{company.id}_layout {{ 'o_layout_background' if company.layout_background in ['Geometric', 'Custom'] else '' }}"
                 t-att-data-oe-model="o and o._name"
@@ -39,6 +45,12 @@
 
         <!-- External Layout Yena -->
         <template id="imzasiz_external_layout_yena" t-name="reports_print.external_layout_yena">
+            <style>
+                * {
+                    font-family: "DejaVu Sans", Arial, sans-serif !important;
+                }
+            </style>
+
             <p>1111</p>
             <t t-if="not o" t-set="o" t-value="doc" />
             <t t-if="not company">,<p>not company</p>
@@ -65,6 +77,12 @@
         </template>
 
         <template id="external_layout_standard_yena" t-name="reports_print.external_layout_standard_yena">
+                <style>
+                    * {
+                        font-family: "DejaVu Sans", Arial, sans-serif !important;
+                    }
+                </style>
+
                 <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
                     <div class="row">
                         <div class="col-3 mb4">
