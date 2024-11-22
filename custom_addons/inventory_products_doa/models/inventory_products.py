@@ -14,6 +14,12 @@ class ProductTemplate(models.Model):
     technical_drawing_filename = fields.Char('Technical Drawing Filename')
     original_filename = fields.Char('Original Filename', compute='_compute_original_filename', store=True)
     cdn_link = fields.Char('CDN Link')
+    
+    status = fields.Selection([
+        ('phase1', 'Phase-1'),
+        ('phase2', 'Phase-2'),
+        ('phase3', 'Phase-3'),
+    ], string='Status', default='phase1', required=True, tracking=True)
 
     @api.depends('technical_drawing_filename')
     def _compute_original_filename(self):
