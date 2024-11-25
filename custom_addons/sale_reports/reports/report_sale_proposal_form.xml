@@ -181,7 +181,7 @@
                             </tfoot>
                         </table>
 
-                        <!-- Coating Section -->
+                        <!-- Sol alt köşeye eklenen bilgiler -->
                         <div style="margin-top: 20px; font-size:10pt;">
                             <b>Coating:</b>
                             <span t-foreach="o.order_line" t-as="line">
@@ -191,7 +191,25 @@
                             </span>
                         </div>
 
-
+                        <!--
+                        <div style="margin-top: 10px; font-size:10pt;">
+                            <b>Material:</b>
+                            <span t-foreach="o.order_line" t-as="line">
+                                <p t-if="line.material">
+                                    <span t-field="line.material" />
+                                </p>
+                            </span>
+                        </div>
+                        <div style="margin-top: 10px; font-size:10pt;">
+                            <b>Theoretical Weight:</b>
+                            <span t-foreach="o.order_line" t-as="line">
+                                <p t-if="line.theoretical_weight">
+                                    <span t-field="line.theoretical_weight" />
+                                </p>
+                            </span>
+                        </div>
+                        -->
+                        
                         <!-- Notes Section -->
                         <span style="font-size:10pt">
                             <b>
@@ -199,6 +217,7 @@
                             </b>
                         </span>
                         <span style="font-size:8pt" t-field="o.note" />
+
 
                         <!-- Footer -->
                         <div class="footer"
