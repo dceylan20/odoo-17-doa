@@ -45,49 +45,69 @@
                                 </td>
 
                                 <!-- Customer Information -->
-                                <td style="width:45%; padding-right: 10px; vertical-align: top;">
-                                    <span t-field="o.partner_id" />
-                                    <br />
-                                    <span t-field="o.partner_id.street" />
-                                    <t t-if="o.partner_id.zip or o.partner_id.city">
+                                <td style="width:45%; vertical-align: top; padding-left: 10px;">
+                                    <div style="line-height: 1.5;">
+                                        <strong>
+                                            <span t-field="o.partner_id" />
+                                        </strong>
+                                        <br />
+                                        <span t-field="o.partner_id.street" />
                                         <span>, </span>
                                         <span t-field="o.partner_id.zip" />
+                                        <span> </span>
                                         <span t-field="o.partner_id.city" />
-                                    </t>
-                                    <br />
-                                    <span t-field="o.partner_id.country_id.name" />
-                                    <br />
-
-                                    <div style="margin-top: 20px;">
-                                        <t t-if="o.name">
-                                            <b>YENA Talep No:</b>
-                                            <span t-field="o.name" />
-                                            <br />
-                                        </t>
-                                        <b>Döküman Tarihi:</b>
-                                        <span
-                                            t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')" />
                                         <br />
-                                        <t t-if="o.partner_id">
-                                            <b>Yetkili:</b>
-                                            <span t-field="o.partner_id" />
-                                            <br />
-                                        </t>
-                                        <!-- <t t-if="o.date_approve">
-                                            <b>Teslim Tarihi:</b>
-                                            <span t-field="o.date_approve"
-                                                t-options="{'format': 'dd/MM/yyyy'}" />
-                                            <br />
-                                        </t> -->
-                                        <t t-if="o.payment_term_id">
-                                            <b>Ödeme Şekli:</b>
+                                        <span t-field="o.partner_id.country_id.name" />
+                                        <br />
+                                        <div t-if="o.partner_id.vat">
+                                            <b>VAT:</b>
+                                            <span t-field="o.partner_id.vat" />
+                                        </div>
+                                        <br />
+                                        <div style="margin-top: 3rem;"
+                                            t-if="o.customer_reference">
+                                            <b>Customer Ref. No:</b>
+                                            <span t-field="o.customer_reference" />
+                                        </div>
+                                        <!-- <div t-if="o.partner_id"><b>Customer:</b> <span
+                                        t-field="o.partner_id"/></div> -->
+                                        <div>
+                                            <b>Offer No:</b>
+                                            <span t-field="o.project_sales" />
+                                        </div>
+                                        <div t-if="o.quo_date">
+                                            <b>Document Date:</b>
+                                            <span t-field="o.quo_date" />
+                                        </div>
+                                        <div t-if="o.payment_term_id">
+                                            <b>Payment Terms:</b>
                                             <span t-field="o.payment_term_id" />
-                                            <br />
-                                        </t>
-                                        <t t-if="o.user_id">
-                                            <b>Hazırlayan:</b>
+                                        </div>
+                                        <div t-if="o.contact_id">
+                                            <b>Attention:</b>
+                                            <span t-field="o.contact_id" />
+                                        </div>
+                                        <div t-if="o.partner_shipping_id">
+                                            <b>Delivery Address:</b>
+                                            <span t-field="o.partner_shipping_id" />
+                                        </div>
+                                        <div t-if="o.incoterm.code">
+                                            <b>Delivery Term:</b>
+                                            <span t-field="o.incoterm.code" />
+                                        </div>
+                                        <div t-if="o.delivery_date">
+                                            <b>Delivery Date:</b>
+                                            <span t-field="o.delivery_date"
+                                                t-options="{'format': 'dd/MM/yyyy'}" />
+                                        </div>
+                                        <div t-else="">
+                                            <b>Delivery Date:</b>
+                                            <span t-esc="o.delivery_date" />
+                                        </div>
+                                        <div t-if="o.user_id">
+                                            <b>Prepared by:</b>
                                             <span t-field="o.user_id" />
-                                        </t>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
