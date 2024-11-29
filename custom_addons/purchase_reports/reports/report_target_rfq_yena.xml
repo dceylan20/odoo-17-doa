@@ -2,18 +2,18 @@
     <template id="report_target_rfq">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
+                <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang or 'en_US')" />
                 <t t-call="yena_external_layout.external_layout_yena">
                     <style>
                         * {
-                        font-family: "DejaVu Sans", Arial, sans-serif !important;
+                            font-family: "DejaVu Sans", Arial, sans-serif !important;
                         }
                     </style>
-                    <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)" />
-                    <h1 style="text-align:center;">Hedef Fiyatlı Teklif Talebi</h1>
+                    <h1 style="text-align:center;" t-translate="true">Target Price Request for Quotation</h1>
                     <div class="page">
                         <table style="font-size:11pt; width: 100%;">
                             <tbody style="border: none;">
-                                <!-- Logo ve Müşteri Bilgileri -->
+                                <!-- Logo and Customer Information -->
                                 <tr style="border: none;">
                                     <!-- Logo -->
                                     <td
@@ -22,7 +22,7 @@
                                             t-att-src="image_data_uri(o.company_id.logo)"
                                             style="max-height: 120px;" alt="Logo" />
                                     </td>
-                                    <!-- Müşteri Bilgileri -->
+                                    <!-- Customer Information -->
                                     <td
                                         style="width:50%; padding-right: 10px; vertical-align: top; border: none;">
                                         <span t-field="o.partner_id" />
@@ -37,9 +37,9 @@
                                     </td>
                                 </tr>
 
-                                <!-- Şirket Bilgileri ve Teklif Biglileri -->
+                                <!-- Company Information and Quotation Details -->
                                 <tr style="border: none;">
-                                    <!-- Şirket Bilgileri -->
+                                    <!-- Company Information -->
                                     <td
                                         style="width:50%; padding-left: 10px; vertical-align: top; border: none;">
                                         <div style="margin-top: 5px;">
@@ -59,37 +59,37 @@
                                             <span> </span>
                                             <br />
                                             <span t-if="o.company_id.id == 2">VAT No: NL838751355B01</span>
-                                            <span t-if="o.company_id.id != 2"> VAT No: <span t-field="o.company_id.vat" />
+                                            <span t-if="o.company_id.id != 2">VAT No: <span t-field="o.company_id.vat" />
                                             </span>
                                         </div>
                                     </td>
-                                    <!-- Teklif Bilgileri -->
+                                    <!-- Quotation Information -->
                                     <td
                                         style="width:50%; padding-left: 0px; vertical-align: top; border: none;">
                                         <div style="margin-top: 5px;">
                                             <div t-if="o.name">
-                                                <b>YENA Request No:</b>
+                                                <b t-translate="true">YENA Request No:</b>
                                                 <span t-field="o.name" />
                                             </div>
                                             <t t-set="today" t-value="datetime.datetime.now()" />
                                             <div>
-                                                <b>Document Date:</b>
+                                                <b t-translate="true">Document Date:</b>
                                                 <span t-esc="today.strftime('%d/%m/%Y')" />
                                             </div>
                                             <div t-if="o.contact_id">
-                                                <b>Yetkili:</b>
+                                                <b t-translate="true">Contact:</b>
                                                 <span t-field="o.contact_id.name" />
                                             </div>
                                             <div t-if="o.incoterm_id">
-                                                <b>Teslim Şekli:</b>
+                                                <b t-translate="true">Delivery Terms:</b>
                                                 <span t-field="o.incoterm_id" />
                                             </div>
                                             <div t-if="o.payment_term_id">
-                                                <b>Ödeme Şekli:</b>
+                                                <b t-translate="true">Payment Terms:</b>
                                                 <span t-field="o.payment_term_id" />
                                             </div>
                                             <div t-if="o.user_id">
-                                                <b>Hazırlayan:</b>
+                                                <b t-translate="true">Prepared By:</b>
                                                 <span t-field="o.user_id" />
                                             </div>
                                         </div>
@@ -103,23 +103,23 @@
                             <thead style="border: none; border-bottom: 1px solid #000;">
                                 <tr style="text-align:center; border: none;">
                                     <th class="text-center" style="padding: 8px; border: none;">
-                                        Çizim No
+                                        <span t-translate="true">Drawing No</span>
                                     </th>
                                     <th class="text-center" style="padding: 8px; border: none;">
-                                        Adet
+                                        <span t-translate="true">Quantity</span>
                                     </th>
                                     <th class="text-center" style="padding: 8px; border: none;">
-                                        Toplam Ağırlık (kg)
+                                        <span t-translate="true">Total Weight (kg)</span>
                                     </th>
                                     <th class="text-center" style="padding: 8px; border: none;">
-                                        Hedef Birim Fiyat
+                                        <span t-translate="true">Target Unit Price</span>
                                     </th>
                                     <th class="text-center" style="padding: 8px; border: none;">
-                                        Hedef Tutar (KDV Hariç)
+                                        <span t-translate="true">Target Amount (Excl. VAT)</span>
                                     </th>
                                     <t t-if="o.delivery_date">
                                         <th class="text-center" style="padding: 8px; border: none;">
-                                            Teslim Tarihi
+                                            <span t-translate="true">Delivery Date</span>
                                         </th>
                                     </t>                                        
                                 </tr>
@@ -130,7 +130,7 @@
                                 <t t-foreach="o.order_line" t-as="line">
                                     <t t-set="current_subtotal"
                                         t-value="current_subtotal + line.price_subtotal" />
-                                    <!-- Ana Satır -->
+                                    <!-- Main Line -->
                                     <tr
                                         t-att-class="'bg-200 font-weight-bold o_line_section' if line.display_type == 'line_section' else 'font-italic o_line_note' if line.display_type == 'line_note' else ''"
                                         style="border: none;">
@@ -182,25 +182,25 @@
                                         </t>
                                     </tr>
 
-                                    <!-- Ürün Detayları-->
+                                    <!-- Product Details -->
                                     <t t-if="not line.display_type and line.product_id.description_purchase">
                                         <tr style="border: none;">
                                             <td colspan="99" class="text-left" style="vertical-align: middle; border: none;">
-                                                Ürün Tanımı: <span t-field="line.product_id.description_purchase" />
+                                                <span t-translate="true">Product Description:</span> <span t-field="line.product_id.description_purchase" />
                                             </td>
                                         </tr>
                                     </t>                                        
                                     <t t-if="not line.display_type and line.product_id.coating">
                                         <tr style="border: none;">
                                             <td colspan="99" class="text-left" style="vertical-align: middle; border: none;">
-                                                Kaplama: <span t-field="line.product_id.coating" />
+                                                <span t-translate="true">Coating:</span> <span t-field="line.product_id.coating" />
                                             </td>
                                         </tr>
                                     </t>
                                     <t t-if="not line.display_type and line.product_id.weight">
                                         <tr style="border: none;">
                                             <td colspan="99" class="text-left" style="vertical-align: middle; border: none; border-bottom: 1px solid #000;">
-                                                Teorik Ağırlık: <span t-field="line.product_id.weight" />
+                                                <span t-translate="true">Theoretical Weight:</span> <span t-field="line.product_id.weight" />
                                             </td>
                                         </tr>
                                     </t>
@@ -209,7 +209,7 @@
                                         <tr class="is-subtotal text-right" style="border: none;">
                                             <td colspan="4"
                                                 style="text-align:right; border: none;">
-                                                <strong>Subtotal</strong>
+                                                <strong t-translate="true">Subtotal</strong>
                                             </td>
                                             <td class="text-right">
                                                 <span t-esc="current_subtotal"
@@ -220,7 +220,7 @@
                                 </t>
                                 <tr style="border: none;">
                                     <td style="text-align:right; font-weight:bold; padding: 8px; border: none;" colspan="99"> 
-                                        Hedef Toplam Fiyat (Exc. VAT): 
+                                        <span t-translate="true">Target Total Price (Excl. VAT):</span> 
                                         <span t-esc="o.amount_untaxed" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}" />
                                     </td>
                                 </tr>
@@ -228,7 +228,7 @@
                         </table>
                         <span style="font-size:10pt">
                             <b>
-                                <u>Notlar:</u>
+                                <u t-translate="true">Notes:</u>
                             </b>
                         </span>
                         <span style="font-size:8pt" t-field="o.notes" />

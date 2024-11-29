@@ -57,9 +57,10 @@
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">purchase_reports.report_dop</field>
             <field name="report_file">purchase_reports.report_dop</field>
-            <field name="print_report_name">'CE - %s' % (object.name)</field>
-            <field name="binding_model_id" ref="purchase.model_purchase_order_line" />
+            <field name="binding_model_id" ref="purchase.model_purchase_order_line"/>
             <field name="binding_type">report</field>
+            <field name="multi" eval="True"/>
         </record>
+        
     </data>
 </odoo>
