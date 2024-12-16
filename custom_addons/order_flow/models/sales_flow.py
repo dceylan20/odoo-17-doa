@@ -12,8 +12,6 @@ class SaleOrder(models.Model):
     rfq_date=fields.Date(string="C-RFQ Date")
     delivery_date=fields.Char(string="C-Delivery Date (Text)")
 
-    locked = fields.Boolean(default=True) 
-
     rfq_reference=fields.Char(string="RFQ Reference", store=True)
 
     customer_reference=fields.Char(string="Customer Reference No", store=True)
@@ -213,7 +211,7 @@ class SaleOrder(models.Model):
 
         res = super(SaleOrder, self).action_confirm()
         incoterm = self.env['account.incoterms'].browse(10)
-
+        locked = fields.Boolean(default=True) 
         for order in self:
             # İlgili transfer emirlerini bul ve güncelle
             delivery_orders = self.env['stock.picking'].search([('origin', '=', order.name)])
