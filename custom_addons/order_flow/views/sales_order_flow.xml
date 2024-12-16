@@ -104,8 +104,8 @@
                 </xpath>
 
                 <xpath expr="//header" position="inside">
-                    <button name="action_quotation_sent" type="object" string="Mark As Quotation Sent"
-                        class="oe_highlight" invisible="state != 'draft'" />
+                        <button name="action_quotation_sent" type="object" string="Mark As Quotation Sent"
+                            class="oe_highlight" invisible="state != 'draft'" />
                 </xpath>
 
                 <xpath expr="//field[@name='partner_id']" position="after">
@@ -137,9 +137,24 @@
                         string="C-Reference No"
                         readonly="state in ['cancel', 'sale', 'done']"
                         required="1" />
-                    <field 
-                        name="project_sales" 
-                        readonly="state in ['cancel', 'sale', 'done']"/>
+                    <label for="project_sales" />
+                    <div class="d-flex">
+                        <div style="flex: 1 0 60%; max-width: 70%;"> 
+                            <field name="project_sales" 
+                                    readonly="state in ['cancel', 'sale', 'done']" 
+                                    style="width: 100%;" />
+                        </div>
+                        <span class="oe_inline o_form_label mr-1 ml-2 oe_edit_only"> </span>
+    
+                        <div style="flex: 0 1 40%; max-width: 30%; display: flex; justify-content: flex-end;"> 
+                            <button name="create_project_button"
+                                string="Create"
+                                type="object"
+                                class="oe_highlight"
+                                invisible="project_sales != False"
+                                /> 
+                        </div>
+                    </div>
                     <field name="analytic_account_id"
                         readonly="state in ['cancel', 'sale', 'done']"/>
                     <field name="sharepoint_url" widget="url" />

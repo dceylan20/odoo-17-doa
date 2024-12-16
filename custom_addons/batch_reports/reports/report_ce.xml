@@ -2,19 +2,23 @@
     <template id="report_ce_batch">
         <t t-call="web.html_container">
             <!-- Batch'ler üzerinde döngü -->
+            <t t-set="unique_project_numbers" t-value="[]"/>
             <t t-foreach="docs" t-as="batch" t-foreach-index="batch_index">
                 <!-- Batch içindeki transferler üzerinde döngü -->
                 <t t-foreach="batch.picking_ids" t-as="picking" t-foreach-index="picking_index">
                     <!-- Transfer içindeki hareketler (move lines) üzerinde döngü -->
                     <t t-foreach="picking.move_line_ids" t-as="move_line"
                         t-foreach-index="move_index">
+                        <t t-if="move_line.picking_id.project_transfer and move_line.picking_id.project_transfer not in unique_project_numbers">
+                            <t t-set="unique_project_numbers" t-value="unique_project_numbers + [move_line.picking_id.project_transfer]"/>
+                        </t>
                         <t t-call="yena_external_layout.external_layout_without_footer">
                             <style>
                                 * {
                                 font-family: "DejaVu Sans", Arial, sans-serif !important;
                                 }
                             </style>
-                            <div class="page"
+                            <div class="page" 
                                 style="background-color: transparent; page-break-after: always;">
                                 <table
                                     style="width: 100%; border-collapse: collapse; background-color: transparent ">

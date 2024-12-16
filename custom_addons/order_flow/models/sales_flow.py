@@ -12,6 +12,8 @@ class SaleOrder(models.Model):
     rfq_date=fields.Date(string="C-RFQ Date")
     delivery_date=fields.Char(string="C-Delivery Date (Text)")
 
+    locked = fields.Boolean(default=True) 
+
     rfq_reference=fields.Char(string="RFQ Reference", store=True)
 
     customer_reference=fields.Char(string="Customer Reference No", store=True)
@@ -137,7 +139,7 @@ class SaleOrder(models.Model):
                 for line in order.order_line:
                     line.tax_id = [(6, 0, [order.tax_selection.id])]
     """ 
-    """Butona elveda
+    
     def create_project_button(self):
         if not self.customer_reference:
             return
@@ -145,7 +147,7 @@ class SaleOrder(models.Model):
         project_vals = {
             'name': self.name + '-' + self.customer_reference,
             'partner_id': self.partner_id.id,
-            'company_id': 2,  # `id` değerini kullanın
+            'company_id': False,  # `id` değerini kullanın
         }
         project = self.env['project.project'].create(project_vals)
 
@@ -156,9 +158,8 @@ class SaleOrder(models.Model):
         self.write({
             'analytic_account_id': analytic_account_id,
             'project_sales': project.id,
-            'company_id':2,
-        })               
-    """    
+        })            
+   
     """Effective Date satış içerisinde var transfer gerçekleşince gözüküyor bu fonksiyona gerek yok 
     def _compute_date_done_list(self):
         for order in self:
@@ -170,6 +171,7 @@ class SaleOrder(models.Model):
             else:
                 order.date_done_list = ''
     """
+    
     @api.model
     def create(self, vals):
         company_id = vals.get('company_id', False)
@@ -183,6 +185,10 @@ class SaleOrder(models.Model):
         record = super().create(vals)
         if not record.customer_reference:
             return record
+
+        return record
+
+    """
         # satış oluşturulduktan sonra bir proje oluştur.
         project_vals = {
             'name': record.name + '-' + record.customer_reference,
@@ -199,45 +205,34 @@ class SaleOrder(models.Model):
             'company_id': 2,
         })
         return record
-
+    """
     def action_confirm(self):
         # C-Delivery Date kontrolü
         if not self.commitment_date:
             raise UserError('The C-Delivery Date is mandatory! Please add this date and try again.')
-            
-        """DROPSHİP OLACAĞI VE MTO Full kullanılacağı için bu aşamaya gerek yok
-        # company_id 1 ise, standart onay işlemi yapılır ve özel işlemlerden kaçınılır
-        if self.company_id.id == 1:
-            res = super(SaleOrder, self).action_confirm()
 
-            for order in self:
-                # İlgili transfer emirlerini bul ve güncelle
-                delivery_orders = self.env['stock.picking'].search([('origin', '=', order.name)])
-                for delivery_order in delivery_orders:
-                    delivery_order.write({
-                        'project_transfer': [(6, 0, order.project_sales.ids)],
-                    })
-                return res
-        """
-        # Diğer durumlarda, öncelikle standart onay işlemi yapılır
         res = super(SaleOrder, self).action_confirm()
-    
-        current_user = self.env.user  # Şu anki kullanıcıyı al
         incoterm = self.env['account.incoterms'].browse(10)
-    
+
         for order in self:
+            # İlgili transfer emirlerini bul ve güncelle
+            delivery_orders = self.env['stock.picking'].search([('origin', '=', order.name)])
+            for delivery_order in delivery_orders:
+                delivery_order.write({
+                    'project_transfer': [(6, 0, order.project_sales.ids)],
+                })
+
             purchase_orders = self.env['purchase.order'].search([('origin', '=', order.name)])
             for purchase_order in purchase_orders:
                 purchase_order.write({
-                    'user_id': current_user.id,
                     'customer_reference': order.customer_reference,
                     'project_purchase': order.project_sales.id,
                     'incoterm_id': incoterm.id
                 })
-    
+
                 # İlişkili tüm satın alma siparişi satırlarını sil
                 purchase_order.order_line.unlink()
-    
+
                 # Yeni satın alma siparişi satırlarını oluştur
                 for so_line in order.order_line:
                     new_price_unit = so_line.price_unit * 0.8
@@ -254,15 +249,7 @@ class SaleOrder(models.Model):
                     })
                     # Satış siparişi satırına geri bağlantı oluştur
                     so_line.purchase_line_ids = [(4, po_line.id)]
-        """
-            # İlişkili tüm teslimat emirlerini bul
-            delivery_orders = self.env['stock.picking'].search([('origin', '=', order.name)])
-            # İlişkili tüm teslimat emirlerini güncelle
-            for delivery_order in delivery_orders:
-                delivery_order.write({
-                    'project_transfer': [(6, 0, order.project_sales.ids)],
-                })
-        """
+
         # Eğer customer_reference değiştiyse analitik hesap ve proje adını güncelle
         if self.rfq_reference != self.customer_reference:
             project = self.project_sales
@@ -273,7 +260,7 @@ class SaleOrder(models.Model):
             analytic_account.write({
                 'name': project.name
             })
-    
+            
         return res
     
     @api.onchange('project_sales')
