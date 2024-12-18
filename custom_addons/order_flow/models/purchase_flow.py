@@ -11,7 +11,7 @@ class PurchaseOrder(models.Model):
     contact_id = fields.Many2one('res.partner', string='Contact Person', store=True)
     tags = fields.Many2many("project.tags", string="Tags")
     
-    locked = fields.Boolean(default=True) 
+
 
     def _inter_company_create_sale_order(self, dest_company):
         super(PurchaseOrder, self)._inter_company_create_sale_order(dest_company)
@@ -41,6 +41,7 @@ class PurchaseOrder(models.Model):
             line.account_analytic_id = analytic_account.id if analytic_account else False
 
     def button_confirm(self):
+        locked = fields.Boolean(default=True) 
         res = super(PurchaseOrder, self).button_confirm()
         for order in self:
             order.order_line.write({'production_status': 'tobe_material_purchase'})

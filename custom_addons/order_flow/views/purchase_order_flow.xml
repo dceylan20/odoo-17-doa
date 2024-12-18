@@ -20,7 +20,7 @@
                 </xpath>
 
                 <xpath expr="//field[@name='analytic_distribution']" position="before">
-                    <field name="account_analytic_id" />
+                    <field name="account_analytic_id" optional="show"/>
                 </xpath>                
 
                 <xpath expr="//field[@name='price_subtotal']" position="before">
@@ -65,6 +65,24 @@
                     <attribute name="optional">hidden</attribute>
                 </xpath>
                 
+                <xpath expr="//field[@name='order_line']/tree//field[@name='qty_received']" position="attributes">
+                    <attribute name="optional">hidden</attribute>
+                </xpath>
+
+                <xpath expr="//page/field[@name='order_line']/tree//field[@name='product_packaging_qty']" position="before">
+                    <field name="product_uom" string="Unit"/>
+                </xpath>
+
+                <xpath expr="//page/field[@name='order_line']/tree//field[@name='product_packaging_qty']" position="before">
+                    <field name="product_packaging_qty" string="Packaging Quantity" optional="show"/>
+                </xpath>
+
+                <xpath expr="//field[@name='order_line']/tree//field[@name='discount']" position="attributes">
+                    <attribute name="optional">hidden</attribute>
+                </xpath>
+                
+
+
                 <xpath expr="(//field[@name='date_approve'])[1]" position="attributes">
                     <attribute name="widget">date</attribute>
                     <attribute name="readonly">0</attribute>
@@ -75,6 +93,17 @@
                 </xpath>
             </field>
         </record>
+
+        <!--record id="view_order_line_inherit_from_inventory" model="ir.ui.view">
+            <field name="name">view.order.line.inherit.from.inventory</field>
+            <field name="model">purchase.order.line</field>
+            <field name="inherit_id" ref="purchase.form_inherit_yena_development_inventory"/> 
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/tree//field[@name='coating']" position="attributes">
+                    <attribute name="optional">hidden</attribute>
+                </xpath>
+            </field>
+        </record-->
 
         <record id="view_order_line_tree_inherit" model="ir.ui.view">
             <field name="name">purchase.order.line.tree.inherit</field>

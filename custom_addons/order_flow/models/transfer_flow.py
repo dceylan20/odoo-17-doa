@@ -166,7 +166,7 @@ class StockMove(models.Model):
             else:
                 move.sales_cost = 0.0
                 
-    @api.constrains('product_uom_qty')
+    """@api.constrains('product_uom_qty')
     def _check_product_uom_qty(self):
         for move in self:
             available_qty = move.product_id.with_context(location=move.location_id.id).virtual_available
@@ -181,7 +181,7 @@ class StockMove(models.Model):
                 raise ValidationError(
                     f"Satış siparişindeki miktar ({sale_order_line.product_uom_qty}) ile fazla adet ({move.product_uom_qty}) gönderilemez. "
                     f"/ You cannot send more than the sales order quantity ({sale_order_line.product_uom_qty}) units ({move.product_uom_qty})."
-                )
+                )"""
                 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
